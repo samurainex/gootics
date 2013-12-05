@@ -1,8 +1,12 @@
 package com.samurainex.gootics;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Map;
 
+import com.google.analytics.tracking.android.ExceptionReporter;
 import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GAServiceManager;
+import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.StandardExceptionParser;
 
@@ -38,24 +42,32 @@ public class MainActivity extends BaseActivity {
 			}
 		});
 
-//		int[] i = new int[6];
-//		try {
-//			i[7] = 0;
-//			
-//			} catch (Exception e) {
-//			// May return null if EasyTracker has not yet been initialized with a
-//			// property ID.
-//		
-//			// StandardExceptionParser is provided to help get meaningful Exception descriptions.
-//			gaTracker.send(MapBuilder
-//			      .createException(new StandardExceptionParser(this, null)				// Context and optional collection of package names to be used in reporting the exception.
-//			      .getDescription(Thread.currentThread().getName(),						// The name of the thread on which the exception occurred.
-//			       e),								                                 	// The exception.
-//			       false)																// False indicates a fatal exception
-//			      .build()
-//			);
-//			}
-//		i[7] = 0;
+		UncaughtExceptionHandler exHandler = new ExceptionReporter(
+			    GoogleAnalytics.getInstance(this).getTracker("UA-46161255-2"), 				// Tracker, may return null if not yet initialized.
+			    GAServiceManager.getInstance(),                        						// GAServiceManager singleton.
+			    Thread.getDefaultUncaughtExceptionHandler(), MainActivity.this);			// Current default uncaught exception handler.
+
+		// Make myHandler the new default uncaught exception handler.
+		Thread.setDefaultUncaughtExceptionHandler(exHandler);
+		
+		int[] i = new int[6];
+		try {
+			i[7] = 0;
+			
+			} catch (Exception e) {
+			// May return null if EasyTracker has not yet been initialized with a
+			// property ID.
+		
+			// StandardExceptionParser is provided to help get meaningful Exception descriptions.
+			gaTracker.send(MapBuilder
+			      .createException(new StandardExceptionParser(this, null)				// Context and optional collection of package names to be used in reporting the exception.
+			      .getDescription(Thread.currentThread().getName(),						// The name of the thread on which the exception occurred.
+			       e),								                                 	// The exception.
+			       false)																// False indicates a fatal exception
+			      .build()
+			);
+			}
+		i[7] = 0;
 	}
 
 	@Override
