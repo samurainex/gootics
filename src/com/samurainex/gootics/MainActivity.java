@@ -37,6 +37,9 @@ public class MainActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
+				gaTracker.send(MapBuilder
+						.createEvent("ui_action", "button_click", "special_button", null).build());
+				
 				Intent tenten = new Intent(MainActivity.this, SpecialActivity.class);
 				startActivity(tenten);
 			}
@@ -54,20 +57,19 @@ public class MainActivity extends BaseActivity {
 		try {
 			i[7] = 0;
 			
-			} catch (Exception e) {
-			// May return null if EasyTracker has not yet been initialized with a
-			// property ID.
-		
-			// StandardExceptionParser is provided to help get meaningful Exception descriptions.
-			gaTracker.send(MapBuilder
-			      .createException(new StandardExceptionParser(this, null)				// Context and optional collection of package names to be used in reporting the exception.
-			      .getDescription(Thread.currentThread().getName(),						// The name of the thread on which the exception occurred.
-			       e),								                                 	// The exception.
-			       false)																// False indicates a fatal exception
-			      .build()
+		} catch (Exception e) {
+		// May return null if EasyTracker has not yet been initialized with a
+		// property ID.
+	
+		// StandardExceptionParser is provided to help get meaningful Exception descriptions.
+		gaTracker.send(MapBuilder
+		      .createException(new StandardExceptionParser(this, null)				// Context and optional collection of package names to be used in reporting the exception.
+		      .getDescription(Thread.currentThread().getName(),						// The name of the thread on which the exception occurred.
+		       e),								                                 	// The exception.
+		       false)																// False indicates a fatal exception
+		      .build()
 			);
-			}
-		i[7] = 0;
+		}
 	}
 
 	@Override

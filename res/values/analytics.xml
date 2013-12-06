@@ -10,4 +10,11 @@ tools:ignore="TypographyDashes">
 
   <!--Enable automatic exception tracking-->
   <bool name="ga_reportUncaughtExceptions">true</bool>
+  
+  <integer name="ga_dispatchPeriod">60</integer>
+  
+  <bool name="ga_anonymizeIp">true</bool>
+  
+  <string name="com.samurainex.gootics.MainActivity">Main Screen</string>
+  <string name="com.samurainex.gootics.SpecialActivity">Special Screen</string>
 </resources>
